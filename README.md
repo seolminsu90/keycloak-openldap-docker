@@ -40,3 +40,7 @@ ID : cn=admin,dc=my-domain,dc=com
 PWD : admin
 
 https://localhost:6443/
+
+[참조][ref]
+
+[ref]: https://github.com/ivangfr/springboot-keycloak-openldap/blob/master/docker-compose.yml
