@@ -41,6 +41,21 @@ PWD : admin
 
 https://localhost:6443/
 
+## 축약어
+
+|name|desc|
+|---|------------------|
+|DN|Distinguished Name (식별 이름)|
+|RDN|Relative Distinguished Name (상대식별 이름)|
+|OU|Organizational Unit (조직 단위)|
+|DC|Domain Component (도메인 구성요소)|
+|CN|Common Name (일반 이름)|
+|SN|Surname (성)|
+|UID|User ID (사용자 식별자)|
+|GID|Group ID (그룹 식별자)|
+|LDAP|Lightweight Directory Access Protocol (경량 디렉터리 액세스 프로토콜)|
+|LDIF|LDAP Data Interchange Format (LDAP 데이터 교환 형식)|
+
 [참조][ref]
 
 [ref]: https://github.com/ivangfr/springboot-keycloak-openldap/blob/master/docker-compose.yml
