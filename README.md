@@ -56,6 +56,96 @@ https://localhost:6443/
 |LDAP|Lightweight Directory Access Protocol (경량 디렉터리 액세스 프로토콜)|
 |LDIF|LDAP Data Interchange Format (LDAP 데이터 교환 형식)|
 
+## openldap 명령
+
+**목록 확인**
+
+```bash
+# 그룹 목록 확인
+ldapsearch -x -LLL -H ldap://localhost:389 -D "cn=admin,dc=mycompany,dc=com" -w [[adminpwd]] -b "ou=groups,dc=mycompany,dc=com" "(objectClass=posixGroup)"
+
+# 유저 목록 확인
+ldapsearch -x -LLL -H ldap://localhost:389 -D "cn=admin,dc=mycompany,dc=com" -w [[adminpwd]] -b "ou=users,dc=mycompany,dc=com" "(objectClass=posixAccount)"
+```
+
+**그룹 수정**
+
+```bash
+# 그룹 추가
+ldapadd -x -H ldap://localhost:389 -D "cn=admin,dc=mycompany,dc=com" -w [[adminpwd]] << EOF
+dn: cn=new-group,ou=groups,dc=mycompany,dc=com
+objectClass: posixGroup
+cn: new-group
+gidNumber: 10000
+EOF
+
+# 그룹 속성 수정
+ldapmodify -x -H ldap://localhost:389 -D "cn=admin,dc=mycompany,dc=com" -w [[adminpwd]] << EOF
+dn: cn=group-id,ou=groups,dc=mycompany,dc=com
+changetype: modify
+replace: description
+description: updated description
+EOF
+
+# 그룹에 유저 추가
+ldapmodify -x -H ldap://localhost:389 -D "cn=admin,dc=mycompany,dc=com" -w [[adminpwd]] << EOF
+dn: cn=group-id,ou=groups,dc=mycompany,dc=com
+changetype: modify
+add: memberUid
+memberUid: user-id
+EOF
+
+# 그룹에서 유저 제거
+ldapmodify -x -H ldap://localhost:389 -D "cn=admin,dc=mycompany,dc=com" -w [[adminpwd]] << EOF
+dn: cn=group-id,ou=groups,dc=mycompany,dc=com
+changetype: modify
+delete: memberUid
+memberUid: user-id
+EOF
+```
+
+**유저 수정**
+
+```bash
+# 유저 추가
+ldapadd -x -H ldap://localhost:389 -D "cn=admin,dc=mycompany,dc=com" -w [[adminpwd]] << EOF
+dn: uid=new-user,ou=users,dc=mycompany,dc=com
+objectClass: posixAccount
+uid: new-user
+cn: New User
+sn: User
+uidNumber: 10000
+gidNumber: 10000
+homeDirectory: /home/new-user
+userPassword: {CLEARTEXT}password
+EOF
+
+# 유저 속성 수정
+ldapmodify -x -H ldap://localhost:389 -D "cn=admin,dc=mycompany,dc=com" -w [[adminpwd]] << EOF
+dn: uid=user-id,ou=users,dc=mycompany,dc=com
+changetype: modify
+replace: email
+email: updated-email@example.com
+EOF
+
+# 유저를 그룹에 추가
+ldapmodify -x -H ldap://localhost:389 -D "cn=admin,dc=mycompany,dc=com" -w [[adminpwd]] << EOF
+dn: cn=group-id,ou=groups,dc=mycompany,dc=com
+changetype: modify
+add: memberUid
+memberUid: user-id
+EOF
+
+# 유저를 그룹에서 제거
+ldapmodify -x -H ldap://localhost:389 -D "cn=admin,dc=mycompany,dc=com" -w [[adminpwd]] << EOF
+dn: cn=group-id,ou=groups,dc=mycompany,dc=com
+changetype: modify
+delete: memberUid
+memberUid: user-id
+EOF
+```
+
+
 [참조][ref]
 
 [ref]: https://github.com/ivangfr/springboot-keycloak-openldap/blob/master/docker-compose.yml
